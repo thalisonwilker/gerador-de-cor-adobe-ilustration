@@ -1,8 +1,11 @@
 import { useState, useCallback } from 'react'
 import { AnimatePresence } from 'framer-motion'
+import toast from 'react-hot-toast'
+import { FiCopy, FiCheckSquare } from 'react-icons/fi'
 import Header from './components/Header'
 import ColorInput from './components/ColorInput'
 import ColorCard from './components/ColorCard'
+import { sfxPrimary, sfxGenerate, sfxCopyAll, sfxError, sfxAdd, sfxSelectAll, sfxCheck, sfxUncheck } from './sounds'
 import './App.css'
 
 let nextId = 5
@@ -17,8 +20,49 @@ const defaultColors = [
 export default function App() {
   const [entries, setEntries] = useState(defaultColors)
   const [palette, setPalette] = useState([])
+  const [selected, setSelected] = useState(new Set())
+
+  const toggleSelect = useCallback((id) => {
+    setSelected(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) { next.delete(id); sfxUncheck() }
+      else { next.add(id); sfxCheck() }
+      return next
+    })
+  }, [])
+
+  const toggleAll = useCallback(() => {
+    sfxSelectAll()
+    setSelected(prev =>
+      prev.size === palette.length
+        ? new Set()
+        : new Set(palette.map(c => c.id))
+    )
+  }, [palette])
+
+  const copyAll = useCallback(() => {
+    const items = palette.filter(c => selected.has(c.id))
+    if (items.length === 0) {
+      sfxError()
+      toast.error('Selecione pelo menos uma cor', { icon: '⚠️' })
+      return
+    }
+    sfxCopyAll()
+    const text = items.map(c => {
+      const { hex, rgb, cmyk } = c
+      return [
+        `R=${rgb.r} G=${rgb.g} B=${rgb.b}`,
+        `HEX ${hex.toUpperCase()}`,
+        `CMYK ${cmyk.c}, ${cmyk.m}, ${cmyk.y}, ${cmyk.k}`,
+      ].join('\n')
+    }).join('\n\n')
+    navigator.clipboard.writeText(text).then(() => {
+      toast.success(`${items.length} cor(es) copiada(s)!`, { duration: 2000, icon: '📋' })
+    })
+  }, [palette, selected])
 
   const addEntry = useCallback(() => {
+    sfxAdd()
     setEntries(prev => [...prev, { id: nextId++, hex: '#6366f1', cmyk: '' }])
   }, [])
 
@@ -31,6 +75,7 @@ export default function App() {
   }, [])
 
   const generate = useCallback(() => {
+    sfxGenerate()
     const cards = entries
       .filter(e => /^#[0-9a-f]{6}$/i.test(e.hex.trim()))
       .map(e => {
@@ -70,17 +115,35 @@ export default function App() {
         </div>
         <div className="btn-row">
           <button className="btn btn-secondary" onClick={addEntry}>+ Adicionar Cor</button>
-          <button className="btn btn-primary" onClick={generate}>Gerar Paleta</button>
+          <button className="btn btn-primary" onClick={() => { sfxPrimary(); generate() }}>Gerar Paleta</button>
         </div>
       </section>
 
       {palette.length > 0 && (
         <section className="palette-section">
           <h2>Nossa Paleta ❤️</h2>
+
+          <div className="palette-toolbar">
+            <label className="select-all-label" onClick={toggleAll}>
+              <FiCheckSquare size={16} />
+              {selected.size === palette.length ? 'Desmarcar todas' : 'Selecionar todas'}
+            </label>
+            <button className="btn btn-copy-all" onClick={copyAll}>
+              <FiCopy size={15} />
+              Copiar selecionadas ({selected.size})
+            </button>
+          </div>
+
           <div className="palette-grid">
             <AnimatePresence>
               {palette.map((c, i) => (
-                <ColorCard key={c.id} color={c} index={i} />
+                <ColorCard
+                  key={c.id}
+                  color={c}
+                  index={i}
+                  isSelected={selected.has(c.id)}
+                  onToggle={toggleSelect}
+                />
               ))}
             </AnimatePresence>
           </div>

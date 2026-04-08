@@ -1,29 +1,42 @@
 import { motion } from 'framer-motion'
 import toast from 'react-hot-toast'
 import { FiCopy } from 'react-icons/fi'
+import { sfxCopy, sfxHover, sfxCheck, sfxUncheck } from '../sounds'
 import './ColorCard.css'
 
 function copy(text, label) {
+  sfxCopy()
   navigator.clipboard.writeText(text).then(() => {
     toast.success(`${label} copiado!`, { duration: 1500, icon: '📋' })
   })
 }
 
-export default function ColorCard({ color, index }) {
-  const { hex, rgb, cmyk } = color
+export default function ColorCard({ color, index, isSelected, onToggle }) {
+  const { id, hex, rgb, cmyk } = color
   const rgbStr = `R=${rgb.r}  G=${rgb.g}  B=${rgb.b}`
   const hexStr = hex.toUpperCase()
   const cmykStr = `CMYK ${cmyk.c}  ${cmyk.m}  ${cmyk.y}  ${cmyk.k}`
 
   return (
     <motion.div
-      className="card"
+      className={`card ${isSelected ? 'card--selected' : ''}`}
       initial={{ opacity: 0, y: 40, scale: 0.92 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -6, transition: { duration: 0.25 } }}
+      onHoverStart={sfxHover}
     >
+      {/* Checkbox */}
+      <label className="card-checkbox" title="Selecionar cor">
+        <input
+          type="checkbox"
+          checked={isSelected}
+          onChange={() => { isSelected ? sfxUncheck() : sfxCheck(); onToggle(id) }}
+        />
+        <span className="card-checkmark" />
+      </label>
+
       {/* Retângulo de cor */}
       <div
         className="card-swatch"

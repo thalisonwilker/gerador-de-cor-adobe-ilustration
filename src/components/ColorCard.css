@@ -2,6 +2,7 @@
   width: 200px;
   border-radius: 20px;
   overflow: hidden;
+  position: relative;
   /* glassmorphism from css.glass */
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(16px);
@@ -11,13 +12,70 @@
     0 8px 32px rgba(0, 0, 0, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
   cursor: default;
-  transition: box-shadow 0.3s;
+  transition: box-shadow 0.3s, border-color 0.3s;
+}
+
+.card--selected {
+  border-color: #f472b6;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.35),
+    0 0 0 2px rgba(244, 114, 182, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .card:hover {
   box-shadow:
     0 12px 44px rgba(0, 0, 0, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* ---- Checkbox ---- */
+.card-checkbox {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 3;
+  cursor: pointer;
+}
+
+.card-checkbox input {
+  display: none;
+}
+
+.card-checkmark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+}
+
+.card-checkmark::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: transparent;
+  transition: background 0.2s;
+}
+
+.card-checkbox input:checked + .card-checkmark {
+  background: #f472b6;
+  border-color: #f472b6;
+}
+
+.card-checkbox input:checked + .card-checkmark::after {
+  background: #fff;
+}
+
+.card-checkbox:hover .card-checkmark {
+  transform: scale(1.1);
+  border-color: rgba(255,255,255,0.5);
 }
 
 /* ---- Swatch rectangle ---- */

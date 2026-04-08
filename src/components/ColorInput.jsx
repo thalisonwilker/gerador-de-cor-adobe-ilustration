@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { FiTrash2 } from 'react-icons/fi'
+import { sfxRemove, sfxClick } from '../sounds'
 import './ColorInput.css'
 
 export default function ColorInput({ entry, onUpdate, onRemove }) {
@@ -16,7 +17,7 @@ export default function ColorInput({ entry, onUpdate, onRemove }) {
         type="color"
         className="picker"
         value={entry.hex}
-        onChange={e => onUpdate(entry.id, 'hex', e.target.value)}
+        onChange={e => { sfxClick(); onUpdate(entry.id, 'hex', e.target.value) }}
       />
 
       <input
@@ -37,7 +38,7 @@ export default function ColorInput({ entry, onUpdate, onRemove }) {
         onChange={e => onUpdate(entry.id, 'cmyk', e.target.value)}
       />
 
-      <button className="btn-icon" onClick={() => onRemove(entry.id)} title="Remover">
+      <button className="btn-icon" onClick={() => { sfxRemove(); onRemove(entry.id) }} title="Remover">
         <FiTrash2 size={16} />
       </button>
     </motion.div>
