@@ -4,10 +4,16 @@
   padding: 1rem;
 }
 
+.heart-float {
+  display: inline-block;
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+
 .header h1 {
   font-size: clamp(1.8rem, 5vw, 2.8rem);
   font-weight: 800;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
   letter-spacing: -0.5px;
 }
 
@@ -18,7 +24,14 @@
   background-clip: text;
 }
 
-.header p {
+.subtitle-love {
+  color: #f9a8d4;
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+
+.subtitle-desc {
   color: var(--text-muted);
-  font-size: 1rem;
+  font-size: 0.9rem;
 }

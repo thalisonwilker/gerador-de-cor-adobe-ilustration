@@ -52,8 +52,8 @@ export default function App() {
       <Header />
 
       <section className="input-section glass">
-        <h2>Adicionar Cores</h2>
-        <p className="hint">Cole o HEX e opcionalmente o CMYK do Illustrator</p>
+        <h2>Escolha as cores mais lindas 🎨</h2>
+        <p className="hint">Cole o HEX e opcionalmente o CMYK do Illustrator — cada cor conta uma história</p>
         <div className="entries">
           <AnimatePresence>
             {entries.map(e => (
@@ -74,7 +74,7 @@ export default function App() {
 
       {palette.length > 0 && (
         <section className="palette-section">
-          <h2>Sua Paleta</h2>
+          <h2>Nossa Paleta ❤️</h2>
           <div className="palette-grid">
             <AnimatePresence>
               {palette.map((c, i) => (
@@ -82,8 +82,14 @@ export default function App() {
               ))}
             </AnimatePresence>
           </div>
+          <p className="palette-love-note">Cada cor aqui tem um pedacinho de nós dois 💕</p>
         </section>
       )}
+
+      <footer className="footer">
+        <p>Feito com 💜 especialmente para você meu amorzinho!</p>
+        <p className="footer-sub">Você colore meu mundo de um jeito que nenhuma paleta consegue traduzir ✨</p>
+      </footer>
     </>
   )
 }
