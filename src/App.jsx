@@ -5,11 +5,13 @@ import ColorInput from './components/ColorInput'
 import ColorCard from './components/ColorCard'
 import './App.css'
 
-let nextId = 3
+let nextId = 5
 
 const defaultColors = [
-  { id: 1, hex: '#11e9ff', cmyk: '58.6, 0, 10.18, 0' },
-  { id: 2, hex: '#1535cc', cmyk: '93.09, 76.16, 0, 0' },
+  { id: 1, hex: '#f472b6', cmyk: '0, 62, 12, 4' },
+  { id: 2, hex: '#ec4899', cmyk: '0, 75, 20, 7' },
+  { id: 3, hex: '#f9a8d4', cmyk: '0, 38, 5, 2' },
+  { id: 4, hex: '#be185d', cmyk: '0, 87, 51, 25' },
 ]
 
 export default function App() {
