@@ -2,12 +2,14 @@ import { motion } from 'framer-motion'
 import toast from 'react-hot-toast'
 import { FiCopy } from 'react-icons/fi'
 import { sfxCopy, sfxHover, sfxCheck, sfxUncheck } from '../sounds'
+import { spawnKisses } from '../kisses'
 import './ColorCard.css'
 
 function copy(text, label) {
   sfxCopy()
+  spawnKisses(3)
   navigator.clipboard.writeText(text).then(() => {
-    toast.success(`${label} copiado!`, { duration: 1500, icon: '📋' })
+    toast.success(`${label} copiado!`, { duration: 1500, icon: '💋' })
   })
 }
 
