@@ -92,12 +92,21 @@
   position: absolute;
   inset: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.25);
+  gap: 0.3rem;
+  background: rgba(0, 0, 0, 0.3);
   color: #fff;
   opacity: 0;
   transition: opacity 0.25s;
+}
+
+.overlay-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
 .card-swatch:hover .card-swatch-overlay {

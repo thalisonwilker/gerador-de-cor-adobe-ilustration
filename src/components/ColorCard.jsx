@@ -5,11 +5,17 @@ import { sfxCopy, sfxHover, sfxCheck, sfxUncheck } from '../sounds'
 import { spawnKisses } from '../kisses'
 import './ColorCard.css'
 
-function copy(text, label) {
+function copy(text, label, big) {
   sfxCopy()
-  spawnKisses(3)
+  if (big) {
+    spawnKisses(10)
+    setTimeout(() => spawnKisses(8), 600)
+    setTimeout(() => spawnKisses(6), 1200)
+  } else {
+    spawnKisses(3)
+  }
   navigator.clipboard.writeText(text).then(() => {
-    toast.success(`${label} copiado!`, { duration: 1500, icon: '💋' })
+    toast.success(big ? 'Todos os dados copiados!' : `${label} copiado!`, { duration: 1500, icon: '💋' })
   })
 }
 
@@ -18,6 +24,8 @@ export default function ColorCard({ color, index, isSelected, onToggle }) {
   const rgbStr = `R=${rgb.r}  G=${rgb.g}  B=${rgb.b}`
   const hexStr = hex.toUpperCase()
   const cmykStr = `CMYK ${cmyk.c}  ${cmyk.m}  ${cmyk.y}  ${cmyk.k}`
+
+  const allData = `R=${rgb.r} G=${rgb.g} B=${rgb.b}\n${hexStr}\nCMYK ${cmyk.c} ${cmyk.m} ${cmyk.y} ${cmyk.k}`
 
   return (
     <motion.div
@@ -39,19 +47,20 @@ export default function ColorCard({ color, index, isSelected, onToggle }) {
         <span className="card-checkmark" />
       </label>
 
-      {/* Retângulo de cor */}
+      {/* Retângulo de cor — clica pra copiar TUDO */}
       <div
         className="card-swatch"
         style={{ background: hex }}
-        onClick={() => copy(hexStr, 'HEX')}
-        title="Clique para copiar HEX"
+        onClick={() => copy(allData, 'Todos', true)}
+        title="Clique para copiar todos os dados"
       >
         <span className="card-swatch-overlay">
           <FiCopy size={22} />
+          <span className="overlay-label">Copiar tudo</span>
         </span>
       </div>
 
-      {/* Info panel — glassmorphism */}
+      {/* Info panel — clica em cada linha pra copiar individual */}
       <div className="card-info">
         <Row label="RGB" value={rgbStr} copyValue={`${rgb.r}, ${rgb.g}, ${rgb.b}`} />
         <Row label="HEX" value={hexStr} copyValue={hexStr} />

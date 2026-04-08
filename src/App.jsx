@@ -5,7 +5,7 @@ import { FiCopy, FiCheckSquare } from 'react-icons/fi'
 import Header from './components/Header'
 import ColorInput from './components/ColorInput'
 import ColorCard from './components/ColorCard'
-import { sfxPrimary, sfxGenerate, sfxCopyAll, sfxError, sfxAdd, sfxSelectAll, sfxCheck, sfxUncheck, sfxRomance } from './sounds'
+import { sfxPrimary, sfxGenerate, sfxCopyAll, sfxError, sfxAdd, sfxSelectAll, sfxCheck, sfxUncheck } from './sounds'
 import { spawnKisses } from './kisses'
 import './App.css'
 
@@ -49,8 +49,6 @@ export default function App() {
       return
     }
     sfxCopyAll()
-    sfxRomance()
-    // Chuva contínua de emojis durante a musiquinha
     const rainCount = Math.max(items.length * 3, 10)
     spawnKisses(rainCount)
     for (let w = 1; w <= 4; w++) {
@@ -84,7 +82,6 @@ export default function App() {
 
   const generate = useCallback(() => {
     sfxGenerate()
-    sfxRomance()
     spawnKisses(6)
     setTimeout(() => spawnKisses(5), 800)
     setTimeout(() => spawnKisses(4), 1600)
